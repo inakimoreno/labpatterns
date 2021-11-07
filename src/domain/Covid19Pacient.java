@@ -11,7 +11,7 @@ import java.util.Set;
 import factory.SymptomFactory;
 import iterator.Covid19PacientIterator;
 
-public class Covid19Pacient {
+public class Covid19Pacient extends Observable {
 	private String  name; 
 	private int age;
 	private Map<Symptom,Integer> symptoms=new HashMap<Symptom,Integer>();
@@ -64,8 +64,10 @@ public class Covid19Pacient {
 		Symptom s=getSymptomByName(symptom);
 		if (s==null) {
 			s=sf.createSymptom(symptom); 
-			symptoms.put(s,w);		
+			symptoms.put(s,w);
 		}
+		this.setChanged();
+		this.notifyObservers();
 		return s;
 	}
 
@@ -73,6 +75,8 @@ public class Covid19Pacient {
 		Symptom s=getSymptomByName(symptomName);
 		System.out.println("Simptom to remove: "+s);
 		if (s!=null) symptoms.remove(s);
+		this.setChanged();
+		this.notifyObservers();
 		return s;
 	}
 	
